@@ -11,7 +11,6 @@ const mongoDigiApiCollection = process.env.MONGO_DIGIAPI_COLLECTION;
 
 const mongoUri = `${mongoConnectionScheme}://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}`;
 
-// export const mongoClient = new MongoClient(mongoUri);
 export const mongoClient = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 export const getDbConnection = async () =>
