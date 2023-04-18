@@ -1,11 +1,12 @@
 import 'dotenv/config.js';
-import getPokemonInfo from '../services/API.service.js';
+import apiUriService from '../services/apiUri.service.js';
+import pokeApiService from '../services/pokeApi.Service.js';
 
 const getAll = async (req,res) => {
   try {
-    const pokemonData = await getPokemonInfo('ditto');
+    const pokemonData = await pokeApiService.getAll();
     res.status(200).json({
-      message: 'A pokemon has benn found!',
+      message: 'This is the list of pokemons found in your pokedex',
       pokemonData
     }
     );
@@ -14,4 +15,37 @@ const getAll = async (req,res) => {
   }
 };
 
-export default { getAll };
+const getByName = async (req,res) => {
+  try {
+    const name = req.params.name;
+    const arrayOfNames = name.split(' ');
+
+    const promiseAll = arrayOfNames.map(async (pokeName) =>
+    {
+      const checkData = await pokeApiService.getPokemon(pokeName);
+      if (checkData !== null)
+      {
+        return checkData;
+      }
+      const pokemonData = await apiUriService.getPokemonInfo(pokeName);
+      if (pokemonData !== undefined)
+      {
+        await pokeApiService.insert(pokemonData);
+        return pokemonData;
+      }
+      console.log(`Not data found: ${pokeName}`);
+    });
+
+    const arrayOfPokemons = (await Promise.all(promiseAll)).filter(Boolean);
+
+    res.status(200).json({
+      message: `A bunch of pokemons has been added to your pokedex! ${name}`,
+      pokemons: arrayOfPokemons
+    }
+    );
+  } catch (error) {
+    res.status(502).json({message:`Bad gateway error: ${error}`});
+  }
+};
+
+export default { getAll, getByName };

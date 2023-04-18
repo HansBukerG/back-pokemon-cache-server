@@ -1,4 +1,4 @@
-import { mongoClient, getDbConnection, getCollection ,getPokeApiCollection, getDigiApiCollection } from './dbConnect.database.js';
+import { mongoClient, getDbConnection, getPokeApiCollection, getDigiApiCollection } from '../../src/database/dbConnect.database.js';
 
 describe('Should get a connection from the database', () =>{
 
