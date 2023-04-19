@@ -37,11 +37,11 @@ const getByName = async (req,res) => {
       console.log(`Not data found: ${digiName}`);
     });
 
-    const arrayOfPokemons = (await Promise.all(promiseAll)).filter(Boolean);
+    const arrayOfDigimons = (await Promise.all(promiseAll)).filter(Boolean);
 
     res.status(200).json({
       message: `A bunch of digimons has been added to your digidex(?)! ${name}`,
-      digimons: arrayOfPokemons
+      digimons: arrayOfDigimons
     }
     );
   } catch (error) {
