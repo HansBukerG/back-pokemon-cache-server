@@ -20,4 +20,26 @@ const getPokemonInfo = async (nameOrId) =>
   }
 };
 
-export default {getPokemonInfo};
+const getDigimonInfo = async (nameOrId) =>
+{
+  try
+  {
+    const URI = `${process.env.DIGIAPI_URI}/api/v1/digimon/${nameOrId}`;
+    const response = await axios.get(URI);
+    const { id, name, skills, images } = response.data;
+    return { id, name, skills, images };
+  }
+  catch (error)
+  {
+    if (error.response && error.response.status === 404)
+    {
+      return undefined;
+    }
+    console.error(error);
+    return undefined;
+  }
+};
+
+
+
+export default { getPokemonInfo, getDigimonInfo };
