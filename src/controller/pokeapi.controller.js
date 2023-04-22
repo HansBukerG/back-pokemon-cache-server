@@ -22,6 +22,7 @@ const getByName = async (req,res) => {
 
     const promiseAll = arrayOfNames.map(async (pokeName) =>
     {
+      pokeName = pokeName.replace('-', ' ');
       const checkData = await pokeApiService.getPokemon(pokeName);
       if (checkData !== null)
       {

@@ -31,7 +31,7 @@ const getDigimonInfo = async (nameOrId) =>
   }
   catch (error)
   {
-    if (error.response && error.response.status === 404)
+    if (error.response.data.error === 1)
     {
       return undefined;
     }

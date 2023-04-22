@@ -22,19 +22,24 @@ const getByName = async (req,res) => {
 
     const promiseAll = arrayOfNames.map(async (digiName) =>
     {
-      const checkData = await digiApiService.getDigimon(digiName);
-      if (checkData !== null)
-      {
-        return checkData;
+      try {
+        digiName = digiName.replace('-', ' ');
+        const checkData = await digiApiService.getDigimon(digiName);
+        if (checkData !== null)
+        {
+          return checkData;
+        }
+        console.log(`data has not found in database! with parameter: ${digiName}`);
+        const digimonData = await apiUriService.getDigimonInfo(digiName);
+        if (digimonData !== undefined)
+        {
+          await digiApiService.insert(digimonData);
+          return digimonData;
+        }
+        console.log(`Not data found: ${digiName}`);
+      } catch (error) {
+        console.error(`Something has happened: ${error}`);
       }
-      console.log(`data has not found in database! with parameter: ${digiName}`);
-      const digimonData = await apiUriService.getDigimonInfo(digiName);
-      if (digimonData !== undefined)
-      {
-        await digiApiService.insert(digimonData);
-        return digimonData;
-      }
-      console.log(`Not data found: ${digiName}`);
     });
 
     const arrayOfDigimons = (await Promise.all(promiseAll)).filter(Boolean);
