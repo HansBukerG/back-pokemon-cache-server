@@ -16,41 +16,44 @@ const getAll = async (req,res) => {
 };
 
 const getByName = async (req,res) => {
-  try {
-    const name = req.params.name;
-    const arrayOfNames = name.split(' ');
+  try
+  {
+    const { name } = req.params;
+    const digimonNamesArray = name.split(' ');
 
-    const promiseAll = arrayOfNames.map(async (digiName) =>
+    const promisesArray = digimonNamesArray.map(async (digimonName) =>
     {
-      try {
-        digiName = digiName.replace('-', ' ');
-        const checkData = await digiApiService.getDigimon(digiName);
-        if (checkData !== null)
+      try
+      {
+        digimonName = digimonName.replace('-', ' ');
+        const existingDigimon = await digiApiService.getDigimon(digimonName);
+        if (existingDigimon)
         {
-          return checkData;
+          return existingDigimon;
         }
-        console.log(`data has not found in database! with parameter: ${digiName}`);
-        const digimonData = await apiUriService.getDigimonInfo(digiName);
-        if (digimonData !== undefined)
+        console.log(`Data not found in database for: ${digimonName}`);
+        const digimonData = await apiUriService.getDigimonInfo(digimonName);
+        if (digimonData)
         {
           await digiApiService.insert(digimonData);
           return digimonData;
         }
-        console.log(`Not data found: ${digiName}`);
-      } catch (error) {
-        console.error(`Something has happened: ${error}`);
+        console.log(`No data found for: ${digimonName}`);
+      } catch (error)
+      {
+        console.error(`An error occurred: ${error}`);
       }
     });
 
-    const arrayOfDigimons = (await Promise.all(promiseAll)).filter(Boolean);
+    const digimonsResultArray = (await Promise.all(promisesArray)).filter(Boolean);
 
     res.status(200).json({
-      message: `A bunch of digimons has been added to your digidex(?)! ${name}`,
-      digimons: arrayOfDigimons
-    }
-    );
-  } catch (error) {
-    res.status(502).json({message:`Bad gateway error: ${error}`});
+      message: `A group of Digimons has been added to your Digidex! Names: ${name}`,
+      digimons: digimonsResultArray,
+    });
+  } catch (error)
+  {
+    res.status(502).json({ message: `Bad gateway error: ${error}` });
   }
 };
 
