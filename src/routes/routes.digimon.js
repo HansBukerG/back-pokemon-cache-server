@@ -4,6 +4,6 @@ import { Router } from 'express';
 const digiRouter = new Router();
 
 digiRouter.get('/digiApi/get/', digiApiController.getAll);
-digiRouter.get('/digiApi/get/:name', digiApiController.getByName);
+digiRouter.get('/digiApi/get/:name', digiApiController.getDigimonsByName);
 
 export default digiRouter;

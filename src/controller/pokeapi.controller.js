@@ -15,38 +15,41 @@ const getAll = async (req,res) => {
   }
 };
 
-const getByName = async (req,res) => {
-  try {
-    const name = req.params.name;
-    const arrayOfNames = name.split(' ');
+const getPokemonsByName = async (req, res) =>
+{
+  try
+  {
+    const { name } = req.params;
+    const pokemonNamesArray = name.split(' ');
 
-    const promiseAll = arrayOfNames.map(async (pokeName) =>
+    const promisesArray = pokemonNamesArray.map(async (pokemonName) =>
     {
-      pokeName = pokeName.replace('-', ' ');
-      const checkData = await pokeApiService.getPokemon(pokeName);
-      if (checkData !== null)
+      pokemonName = pokemonName.replace('-', ' ');
+      const existingPokemon = await pokeApiService.getPokemon(pokemonName);
+      if (existingPokemon)
       {
-        return checkData;
+        return existingPokemon;
       }
-      const pokemonData = await apiUriService.getPokemonInfo(pokeName);
-      if (pokemonData !== undefined)
+      const pokemonData = await apiUriService.getPokemonInfo(pokemonName);
+      if (pokemonData)
       {
         await pokeApiService.insert(pokemonData);
         return pokemonData;
       }
-      console.log(`Not data found: ${pokeName}`);
+      console.log(`No data found for: ${pokemonName}`);
     });
 
-    const arrayOfPokemons = (await Promise.all(promiseAll)).filter(Boolean);
+    const pokemonsResultArray = (await Promise.all(promisesArray)).filter(Boolean);
 
     res.status(200).json({
-      message: `A bunch of pokemons has been added to your pokedex! ${name}`,
-      pokemons: arrayOfPokemons
-    }
-    );
-  } catch (error) {
-    res.status(502).json({message:`Bad gateway error: ${error}`});
+      message: `A group of Pokemons has been added to your Pokedex! Names: ${name}`,
+      pokemons: pokemonsResultArray,
+    });
+  } catch (error)
+  {
+    res.status(502).json({ message: `Bad gateway error: ${error}` });
   }
 };
 
-export default { getAll, getByName };
+
+export default { getAll, getPokemonsByName };

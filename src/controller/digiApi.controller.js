@@ -15,7 +15,7 @@ const getAll = async (req,res) => {
   }
 };
 
-const getByName = async (req,res) => {
+const getDigimonsByName = async (req,res) => {
   try
   {
     const { name } = req.params;
@@ -57,4 +57,4 @@ const getByName = async (req,res) => {
   }
 };
 
-export default { getAll, getByName };
+export default { getAll, getDigimonsByName };
