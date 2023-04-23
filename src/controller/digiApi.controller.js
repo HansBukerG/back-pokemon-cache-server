@@ -31,11 +31,11 @@ const getDigimonsByName = async (req,res) => {
         {
           return existingDigimon;
         }
-        console.log(`Data not found in database for: ${digimonName}`);
         const digimonData = await apiUriService.getDigimonInfo(digimonName);
         if (digimonData)
         {
           await digiApiService.insert(digimonData);
+          console.log(`Added a new digimon to your database!: ${digimonData.name}`);
           return digimonData;
         }
         console.log(`No data found for: ${digimonName}`);
