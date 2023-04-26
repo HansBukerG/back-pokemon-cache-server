@@ -1,4 +1,3 @@
-import { json } from 'express';
 import mangadexApi from '../services/mangadex.api.js';
 import mangadexCache from '../services/mangadex.cache.js';
 
