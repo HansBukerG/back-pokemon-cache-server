@@ -1,33 +1,40 @@
 import { MongoClient } from 'mongodb';
+import { MONGO_CONNECTION_SCHEME, 
+  MONGO_DATABASE,
+  MONGO_DIGIAPI_COLLECTION,
+  MONGO_HOST,
+  MONGO_MANGADEX_CHAPTER_IMAGES,
+  MONGO_PASSWORD,
+  MONGO_POKEAPI_COLLECTION,
+  MONGO_PORT,
+  MONGO_USER,  
+} from '../../environments/environment.js';
 
-const mongoConnectionScheme = process.env.MONGO_CONNECTION_SCHEME;
-const mongoHost = process.env.MONGO_HOST;
-const mongoPort = process.env.MONGO_PORT;
-const mongoUser = process.env.MONGO_USER;
-const mongoPassword = process.env.MONGO_PASSWORD;
-const mongoDatabase = process.env.MONGO_DATABASE;
-const mongoPokeApiCollection = process.env.MONGO_POKEAPI_COLLECTION;
-const mongoDigiApiCollection = process.env.MONGO_DIGIAPI_COLLECTION;
-
-const mongoUri = `${mongoConnectionScheme}://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}`;
+const mongoUri = `${MONGO_CONNECTION_SCHEME}://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`;
 
 export const mongoClient = new MongoClient(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 export const getDbConnection = async () =>
 {
-  if(mongoClient == undefined){
-    try
+  try {
+    if (mongoClient == undefined)
     {
-      console.log(`Setting up a new connection to: ${mongoUri}`);
-      await mongoClient.connect();
-    } catch (error)
-    {
-      console.error('Error connecting to MongoDB', error);
-      throw error;
+      try
+      {
+        console.log(`Setting up a new connection to: ${mongoUri}`);
+        await mongoClient.connect();
+      } catch (error)
+      {
+        console.error('Error connecting to MongoDB', error);
+        throw error;
+      }
     }
+    const database = mongoClient.db(MONGO_DATABASE);
+    return database;
+  } catch (error) {
+    console.error(`getDbConnection() error: ${error}`);
   }
-  const database = mongoClient.db(mongoDatabase);
-  return database;
+
 };
 
 export const getCollection = async (name) => {
@@ -36,9 +43,13 @@ export const getCollection = async (name) => {
 };
 
 export const getPokeApiCollection = async () => {
-  return await getCollection(mongoPokeApiCollection);
+  return await getCollection(MONGO_POKEAPI_COLLECTION);
 };
 
 export const getDigiApiCollection = async () => {
-  return await getCollection(mongoDigiApiCollection);
+  return await getCollection(MONGO_DIGIAPI_COLLECTION);
+};
+
+export const getMangaChapterCollection = async () => {
+  return await getCollection(MONGO_MANGADEX_CHAPTER_IMAGES);
 };
