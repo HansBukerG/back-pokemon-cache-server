@@ -1,6 +1,6 @@
 import 'dotenv/config.js';
 import apiUriService from '../services/apiUri.service.js';
-import digiApiService from '../services/digiApi.service.js';
+import digiApiService from '../services/digiApiCollection.service.js';
 
 const getAll = async (req,res) => {
   try {
