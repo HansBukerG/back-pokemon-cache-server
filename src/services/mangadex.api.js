@@ -5,7 +5,19 @@ const getManga = async () =>{
   // Esta api trae un listado de mangas desde la API de mangadex.org
   // https://api.mangadex.org/manga
   try {
-    const URI = `${MANGADEX_URI}/manga?limit=${MANGADEX_LIMIT}`;
+    const URI = `${MANGADEX_URI}/manga?limit=${MANGADEX_LIMIT}&includes[]=cover_art`;
+    const { data } = await axios.get(URI);
+    return data;
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+};
+const getCoverArt = async (coverArtId) =>{
+  // Esta api trae la imagen de portada en base a la id del manga
+  // https://api.mangadex.org/cover
+  try {
+    const URI = `${MANGADEX_URI}/cover/${coverArtId}`;
     const { data } = await axios.get(URI);
     return data;
   } catch (error) {

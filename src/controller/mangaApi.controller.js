@@ -4,14 +4,10 @@ import mangadexCache from '../services/mangadex.cache.js';
 
 const getManga = async (req, res) =>{
   try {
-    const mangaFound = await mangadexApi.getManga();
+    const {data} = await mangadexApi.getManga();
 
-    return res.status(200).json(
-      {
-        message:'Data collected succesfully!',
-        data: mangaFound.data,
-      }
-    );
+    return res.status(200).json({data});
+
   } catch (error) {
     console.error(`getManga Controller failed on execution: ${error}`);
     return res.status(503).json({
@@ -24,12 +20,9 @@ const getMangaByTitle = async (req,res) =>{
   try {
     const { title } = req.params;
 
-    const mangaFound = await mangadexApi.getMangaByTitle(title);
+    const {data} = await mangadexApi.getMangaByTitle(title);
 
-    return res.status(200).json({
-      message:'Controller executed succesfully!',
-      data: mangaFound.data,
-    });
+    return res.status(200).json({ data });
   } catch (error) {
     console.error(`getMangaByTitle Controller failed on execution: ${error}`);
     return res.status(503).json({
@@ -41,11 +34,8 @@ const getMangaByTitle = async (req,res) =>{
 const getChapters = async (req,res) =>{
   try {
     const { id } = req.params;
-    const mangaChapters = await mangadexApi.getChaptersByMangaId(id);
-    return res.status(200).json({
-      message:'data found succesfully!',
-      data: mangaChapters.data,
-    });
+    const {data} = await mangadexApi.getChaptersByMangaId(id);
+    return res.status(200).json({data});
   } catch (error) {
     console.error(`getChapters Controller failed on execution: ${error}`);
     return res.status(503).json({
@@ -75,7 +65,7 @@ const getImagesOfChapterManga = async (req,res) => {
       images: chapterImages,
     };
 
-    const savedData = await mangadexCache.insert(dto);
+    await mangadexCache.insert(dto);
     console.log(`Data stored for id: ${chapterId}`);
     return res.status(200).json(dto);
 

@@ -2,3 +2,4 @@ MAKEPROJECT
 .env
 node_modules
 docker-compose.yml
+json-example
