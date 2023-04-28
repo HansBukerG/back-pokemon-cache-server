@@ -1,23 +1,27 @@
 import axios from 'axios';
 import { MANGADEX_URI, MANGADEX_LIMIT, MANGADEX_DATASOURCE} from '../../environments/environment.js';
 
+const getCoverArt = async (coverArtId) =>
+{
+  // Esta api trae la imagen de portada en base a la id del manga
+  // https://api.mangadex.org/cover
+  try
+  {
+    const URI = `${MANGADEX_URI}/cover/${coverArtId}`;
+    const { data } = await axios.get(URI);
+    return data;
+  } catch (error)
+  {
+    console.error(error);
+    return undefined;
+  }
+};
+
 const getManga = async () =>{
   // Esta api trae un listado de mangas desde la API de mangadex.org
   // https://api.mangadex.org/manga
   try {
     const URI = `${MANGADEX_URI}/manga?limit=${MANGADEX_LIMIT}&includes[]=cover_art`;
-    const { data } = await axios.get(URI);
-    return data;
-  } catch (error) {
-    console.error(error);
-    return undefined;
-  }
-};
-const getCoverArt = async (coverArtId) =>{
-  // Esta api trae la imagen de portada en base a la id del manga
-  // https://api.mangadex.org/cover
-  try {
-    const URI = `${MANGADEX_URI}/cover/${coverArtId}`;
     const { data } = await axios.get(URI);
     return data;
   } catch (error) {
@@ -34,6 +38,7 @@ const getMangaByTitle = async (title) =>
     const { data } = await axios.get(baseUrl, {
       params: {
         title,
+        includes: ['cover_art'],
       },
     });
     return data;
