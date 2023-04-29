@@ -18,8 +18,6 @@ const getCoverArt = async (coverArtId) =>
 };
 
 const getManga = async () =>{
-  // Esta api trae un listado de mangas desde la API de mangadex.org
-  // https://api.mangadex.org/manga
   try {
     const URI = `${MANGADEX_URI}/manga?limit=${MANGADEX_LIMIT}&includes[]=cover_art`;
     const { data } = await axios.get(URI);
