@@ -9,6 +9,7 @@ import { MONGO_CONNECTION_SCHEME,
   MONGO_PORT,
   MONGO_USER,  
 } from '../../environments/environment.js';
+import logger from '../utils/logger.utils.js';
 
 const mongoUri = `${MONGO_CONNECTION_SCHEME}://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`;
 
@@ -25,14 +26,14 @@ export const getDbConnection = async () =>
         await mongoClient.connect();
       } catch (error)
       {
-        console.error('Error connecting to MongoDB', error);
+        logger.error('Error connecting to MongoDB', error);
         throw error;
       }
     }
     const database = mongoClient.db(MONGO_DATABASE);
     return database;
   } catch (error) {
-    console.error(`getDbConnection() error: ${error}`);
+    logger.error(`getDbConnection() error: ${error}`);
   }
 
 };

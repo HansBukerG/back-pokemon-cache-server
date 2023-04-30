@@ -1,6 +1,6 @@
-import 'dotenv/config.js';
 import apiUriService from '../services/apiUri.service.js';
 import pokeApiService from '../services/pokeApiCollection.Service.js';
+import logger from '../utils/logger.utils.js';
 
 const getAll = async (req,res) => {
   try {

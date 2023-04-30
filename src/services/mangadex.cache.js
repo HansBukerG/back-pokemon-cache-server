@@ -1,4 +1,5 @@
 import { getMangaChapterCollection } from '../database/dbConnect.database.js';
+import logger from '../utils/logger.utils.js';
 
 const insert = async (data) =>
 {
@@ -9,7 +10,7 @@ const insert = async (data) =>
     return result;
   } catch (error)
   {
-    console.error(error);
+    logger.error(error);
     return undefined;
   }
 };
@@ -25,7 +26,7 @@ const getImagesByChapterId = async (chapterId) =>
     }
     return result;
   } catch (error) {
-    console.error(`getImagesByChapterId() error: ${error}`);
+    logger.error(`getImagesByChapterId() error: ${error}`);
   }
 
 };

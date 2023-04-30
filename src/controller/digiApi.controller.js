@@ -1,6 +1,6 @@
-import 'dotenv/config.js';
 import apiUriService from '../services/apiUri.service.js';
 import digiApiService from '../services/digiApiCollection.service.js';
+import logger from '../utils/logger.utils.js';
 
 const getAll = async (req,res) => {
   try {
@@ -41,7 +41,7 @@ const getDigimonsByName = async (req,res) => {
         console.log(`No data found for: ${digimonName}`);
       } catch (error)
       {
-        console.error(`An error occurred: ${error}`);
+        logger.error(`An error occurred: ${error}`);
       }
     });
 

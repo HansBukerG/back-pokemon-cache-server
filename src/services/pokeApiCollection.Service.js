@@ -1,4 +1,6 @@
 import { getPokeApiCollection } from '../database/dbConnect.database.js';
+import logger from '../utils/logger.utils.js';
+
 
 const getAll = async () =>
 {
@@ -47,7 +49,7 @@ const insert = async (data) =>
     return result;
   } catch (error)
   {
-    console.error(error);
+    logger.error(error);
     return undefined;
   }
 };

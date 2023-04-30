@@ -3,3 +3,5 @@ MAKEPROJECT
 node_modules
 docker-compose.yml
 json-example
+Dockerfile
+.dockerignore

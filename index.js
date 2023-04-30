@@ -1,7 +1,8 @@
 import app from './src/app.js';
+import logger from './src/utils/logger.utils.js';
 
 const main = () => {
-  console.log('API cache server by HansBukerG');
+  logger.info('API cache server by HansBukerG');
   app();
 };
 

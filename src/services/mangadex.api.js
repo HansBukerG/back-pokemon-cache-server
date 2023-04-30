@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { MANGADEX_URI, MANGADEX_LIMIT, MANGADEX_DATASOURCE} from '../../environments/environment.js';
+import logger from '../utils/logger.utils.js';
 
 const getCoverArt = async (coverArtId) =>
 {
@@ -12,7 +13,7 @@ const getCoverArt = async (coverArtId) =>
     return data;
   } catch (error)
   {
-    console.error(error);
+    logger.error(error);
     return undefined;
   }
 };
@@ -23,7 +24,20 @@ const getManga = async () =>{
     const { data } = await axios.get(URI);
     return data;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
+    return undefined;
+  }
+};
+
+const getMangaById = async( mangaId ) =>{
+  try
+  {
+    const URI = `${MANGADEX_URI}/manga/${mangaId}?limit=${MANGADEX_LIMIT}&includes[]=cover_art`;
+    const { data } = await axios.get(URI);
+    return data;
+  } catch (error)
+  {
+    logger.error(error);
     return undefined;
   }
 };
@@ -42,7 +56,7 @@ const getMangaByTitle = async (title) =>
     return data;
   } catch (error)
   {
-    console.error(error);
+    logger.error(error);
     return undefined;
   }
 };
@@ -56,7 +70,7 @@ const getChaptersByMangaId = async (mangaID) =>
     return data;
   } catch (error)
   {
-    console.error(error);
+    logger.error(error);
     return undefined;
   }
 };
@@ -64,7 +78,6 @@ const getChaptersByMangaId = async (mangaID) =>
 const getImagesOfChapter = async (chapterId) => {
   try {
     const baseUrl = `${MANGADEX_URI}/at-home/server/${chapterId}`;
-    console.log(`retrieving data from: ${baseUrl}`);
     const { data } = await axios.get(baseUrl);
     if (!data) {
       throw error(`There is not data found on execution of API: ${baseUrl}`);
@@ -79,7 +92,7 @@ const getImagesOfChapter = async (chapterId) => {
     });
     return images;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return undefined;
   }
 };
@@ -88,5 +101,6 @@ export default {
   getChaptersByMangaId, 
   getManga, 
   getMangaByTitle, 
-  getImagesOfChapter 
+  getImagesOfChapter,
+  getMangaById
 };

@@ -1,4 +1,5 @@
 import { getDigiApiCollection } from '../database/dbConnect.database.js';
+import logger from '../utils/logger.utils.js';
 
 const getAll = async () =>
 {
